@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+export ACTIVEMQ_DATA=/var/lib/data/activemq
+export ACTIVEMQ_TMP=/var/tmp/activemq
+
+/opt/apache-activemq/bin/activemq console
