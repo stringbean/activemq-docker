@@ -1,11 +1,9 @@
 #################### BUILDER IMAGE ####################
-FROM eclipse-temurin:17-alpine AS builder
+FROM eclipse-temurin:17-focal AS builder
 
 ARG ACTIVEMQ_VERSION=5.16.3
 
 ENV ACTIVEMQ_HOME="/opt/apache-activemq-$ACTIVEMQ_VERSION"
-
-RUN apk update && apk add curl binutils
 
 # download activemq & extract to /opt/apache-activemq-{version}
 RUN curl -sL "https://www.apache.org/dyn/closer.cgi?filename=/activemq/${ACTIVEMQ_VERSION}/apache-activemq-${ACTIVEMQ_VERSION}-bin.tar.gz&action=download" | tar -zx -C /opt
@@ -27,7 +25,7 @@ RUN rm -rf $ACTIVEMQ_HOME/activemq-all-$ACTIVEMQ_VERSION.jar \
 
 #################### MAIN IMAGE ####################
 
-FROM alpine
+FROM ubuntu:focal
 
 ARG ACTIVEMQ_VERSION=5.16.3
 
@@ -38,7 +36,7 @@ RUN ln -s /opt/apache-activemq-${ACTIVEMQ_VERSION} /opt/apache-activemq
 # copy JRE from builder
 COPY --from=builder /opt/java/openjdk-17-jlink /opt/java/openjdk-17-jlink
 
-RUN addgroup -S activemq && adduser -G activemq -S -H activemq
+RUN groupadd -r activemq && useradd -r -M -g activemq activemq
 
 # create data dir
 RUN mkdir -p /var/lib/data/activemq && chown -R activemq:activemq /var/lib/data/activemq
