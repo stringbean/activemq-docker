@@ -1,4 +1,3 @@
-
 on:
   push:
     branches: ['main']
@@ -11,6 +10,10 @@ jobs:
   publish:
     name: Publish Docker containers
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        activemq-version: ['5.16.3']
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -33,12 +36,20 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}},value=${{ matrix.activemq-version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ matrix.activemq-version }}
+          labels: |
+            version=${{ matrix.activemq-version }}
 
       - name: Publish containers
         uses: docker/build-push-action@v2
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          # TODO re-enable arm64
+          platforms: linux/amd64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args:
+            ACTIVEMQ_VERSION: ${{matrix.activemq-version}}
