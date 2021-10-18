@@ -1,7 +1,7 @@
 # ActiveMQ Docker Images
 
 ```sh
-docker run -p 8161:8161 -p 61616:61616 thestringbean/activemq
+docker run -p 8161:8161 -p 61616:61616 ghcr.io/stringbean/activemq-docker
 ```
 
 ## Exposed Ports

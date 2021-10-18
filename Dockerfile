@@ -14,7 +14,7 @@ RUN jlink --no-header-files \
   --compress=2 \
   --strip-debug \
   --vm server \
-  --add-modules $(jdeps -q --print-module-deps --ignore-missing-deps $ACTIVEMQ_HOME/activemq-all-$ACTIVEMQ_VERSION.jar),jdk.management.agent \
+  --add-modules $(jdeps -q --print-module-deps --ignore-missing-deps $ACTIVEMQ_HOME/activemq-all-$ACTIVEMQ_VERSION.jar),jdk.management.agent,jdk.naming.rmi,jdk.xml.dom \
   --output /opt/java/openjdk-17-jlink
 
 # remove uncesary parts of the distributution
