@@ -44,6 +44,8 @@ RUN mkdir -p /var/tmp/activemq && chown -R activemq:activemq /var/tmp/activemq
 
 # update jetty config to listen on all interfaces
 RUN sed -i.bak -e 's/127\.0\.0\.1/0.0.0.0/g' /opt/apache-activemq/conf/jetty.xml
+# enable JMX (used for shutdown)
+RUN sed -i.bak 's!<managementContext createConnector="false"/>!<managementContext createConnector="true"/>!' /opt/apache-activemq/conf/activemq.xml
 
 USER activemq
 COPY entrypoint /

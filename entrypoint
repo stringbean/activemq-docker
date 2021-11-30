@@ -1,6 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 export ACTIVEMQ_DATA=/var/lib/data/activemq
 export ACTIVEMQ_TMP=/var/tmp/activemq
 
-/opt/apache-activemq/bin/activemq console
+shutdown() {
+    echo "SHUTDOWN"
+    /opt/apache-activemq/bin/activemq stop
+}
+
+trap shutdown TERM
+
+/opt/apache-activemq/bin/activemq console &
+
+wait $!
