@@ -25,7 +25,7 @@ RUN rm -rf $ACTIVEMQ_HOME/activemq-all-$ACTIVEMQ_VERSION.jar \
 
 #################### MAIN IMAGE ####################
 
-FROM ubuntu:focal
+FROM ubuntu:20.04
 
 ARG ACTIVEMQ_VERSION=5.16.3
 
